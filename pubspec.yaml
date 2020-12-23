@@ -25,15 +25,12 @@ dependencies:
     sdk: flutter
     
   http: ^0.12.0+2
-  provider: ^3.1.0
   shared_preferences:
   sliding_up_panel: ^1.0.2
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
   rxdart:
-  firebase_auth: ^0.16.1
-  equatable: ^1.2.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

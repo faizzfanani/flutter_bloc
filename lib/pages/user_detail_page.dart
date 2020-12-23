@@ -46,8 +46,8 @@ class _DetailState extends State<Detail> {
         builder: (context, snapshot) {
           print(snapshot);
           if (snapshot.hasData)
-            return _kill(context);
-          //return _buildBody(snapshot.data, context);
+            //return _kill(context);
+            return _buildBody(snapshot.data, context);
           else if (snapshot.hasError)
             return _buildErrorPage(snapshot.error);
           else
@@ -69,7 +69,6 @@ class _DetailState extends State<Detail> {
                 child: IconButton(
                     icon: Icon(Icons.arrow_back, color: Colors.white),
                     onPressed: () {
-                      Navigator.pop(context);
                       Navigator.pop(context);
                     }),
                 decoration: BoxDecoration(
@@ -98,12 +97,6 @@ class _DetailState extends State<Detail> {
               ),
               minHeight: MediaQuery.of(context).size.height * 0.43,
               maxHeight: MediaQuery.of(context).size.height * 0.55,
-              body: GestureDetector(
-                onTap: () => _panelController.close(),
-                child: Container(
-                  color: Colors.transparent,
-                ),
-              ),
               panelBuilder: (ScrollController controller) =>
                   _panelBody(controller, user, context),
               onPanelSlide: (value) {

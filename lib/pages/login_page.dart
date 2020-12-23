@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/utils/user_provider.dart';
-import 'package:provider/provider.dart';
 import 'user_list_page.dart';
 
 class Login extends StatefulWidget {

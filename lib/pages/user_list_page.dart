@@ -32,7 +32,7 @@ class UserList extends StatelessWidget {
             future: getData(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return new ItemList(
+                return new _ItemList(
                   users: snapshot.data,
                 );
               }
@@ -52,34 +52,72 @@ class UserList extends StatelessWidget {
 }
 
 ///Set up user list
-class ItemList extends StatelessWidget {
+class _ItemList extends StatefulWidget {
   final List users;
-  int counter = 10;
 
-  ItemList({this.users});
+  const _ItemList({Key key, this.users}) : super(key: key);
+  @override
+  __ItemListState createState() => __ItemListState();
+}
+
+class __ItemListState extends State<_ItemList> {
+  int counter = 10;
   @override
   Widget build(BuildContext context) {
     return new ListView.builder(
-      itemCount: users == null ? 0 : users.length,
+      itemCount: widget.users.length == 0
+          ? 0
+          : widget.users.length <= counter
+              ? widget.users.length
+              : counter + 1,
       itemBuilder: (context, i) {
-        return new Container(
-            padding: const EdgeInsets.only(top: 1.0, bottom: 1.0, right: 1.0),
-            child: new GestureDetector(
-              onTap: () => Navigator.of(context).push(new MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      new Detail(username: users[i]['login']))),
-              child: new Card(
-                child: new ListTile(
-                  title: new Text(users[i]['login']),
-                  leading: new CircleAvatar(
-                    radius: 30.0,
-                    backgroundColor: Colors.transparent,
-                    backgroundImage: NetworkImage('${users[i]['avatar_url']}'),
+        return (i >= counter)
+            ? GestureDetector(
+                onTap: () {
+                  setState(() {
+                    counter += 10;
+                  });
+                },
+                child: Container(
+                  height: 45,
+                  margin: EdgeInsets.all(10),
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Color(0xff33313b), Color(0xff4592af)],
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  child: Center(
+                    child: Text(
+                      'Load More',
+                      style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
-                  subtitle: new Text("${users[i]['html_url']}"),
                 ),
-              ),
-            ));
+              )
+            : new Container(
+                padding:
+                    const EdgeInsets.only(top: 1.0, bottom: 1.0, right: 1.0),
+                child: new GestureDetector(
+                  onTap: () => Navigator.of(context).push(new MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          new Detail(username: widget.users[i]['login']))),
+                  child: new Card(
+                    child: new ListTile(
+                      title: new Text(widget.users[i]['login']),
+                      leading: new CircleAvatar(
+                        radius: 30.0,
+                        backgroundColor: Colors.transparent,
+                        backgroundImage:
+                            NetworkImage('${widget.users[i]['avatar_url']}'),
+                      ),
+                      subtitle: new Text("${widget.users[i]['html_url']}"),
+                    ),
+                  ),
+                ));
       },
     );
   }
