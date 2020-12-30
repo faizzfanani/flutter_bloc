@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/model/user_model.dart';
 import 'package:flutter_bloc/utils/api.dart';
+import 'webview_page.dart';
 import "package:http/http.dart" as http;
 import 'dart:convert';
 import 'dart:developer';
@@ -46,7 +47,6 @@ class _DetailState extends State<Detail> {
         builder: (context, snapshot) {
           print(snapshot);
           if (snapshot.hasData)
-            //return _kill(context);
             return _buildBody(snapshot.data, context);
           else if (snapshot.hasError)
             return _buildErrorPage(snapshot.error);
@@ -129,17 +129,6 @@ class _DetailState extends State<Detail> {
           child: CircularProgressIndicator(),
         ),
       );
-
-  Widget _kill(BuildContext context) {
-    return AppBar(
-      leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-            Navigator.pop(context);
-          }),
-    );
-  }
 }
 
 /// **********************************************
@@ -187,22 +176,29 @@ SingleChildScrollView _panelBody(
         SizedBox(
           height: 30,
         ),
-        Container(
-          height: 45,
-          margin: EdgeInsets.only(left: 10, right: 10),
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xff33313b), Color(0xff4592af)],
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(new MaterialPageRoute(
+                builder: (BuildContext context) => new Webview()));
+          },
+          behavior: HitTestBehavior.opaque,
+          child: Container(
+            height: 45,
+            margin: EdgeInsets.only(left: 10, right: 10),
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xff33313b), Color(0xff4592af)],
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            child: Center(
+              child: Text(
+                'Follow',
+                style: TextStyle(
+                    fontSize: 17,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
               ),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          child: Center(
-            child: Text(
-              'Follow',
-              style: TextStyle(
-                  fontSize: 17,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold),
             ),
           ),
         )
